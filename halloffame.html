@@ -1,37 +1,342 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hall of Fame - Dark Knight</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hall of Fames — Aluri Hruthik (Dark Knight)</title>
+  <meta name="description" content="Hall of Fames — Recognized by Leading Organizations Worldwide. Aluri Hruthik (Dark Knight) - responsible disclosure acknowledgments."/>
+  <style>
+    :root{
+      --bg:#05060a;
+      --panel:#0d1116;
+      --muted:#9aa3b2;
+      --neon:#4fd6ff;    /* main neon blue */
+      --neon-2:#8ab4ff;  /* secondary blue */
+      --glass: rgba(255,255,255,0.03);
+      --card-grad: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color: #e6f7ff;
+      background:
+        radial-gradient(800px 300px at 10% 10%, rgba(138,180,255,0.03), transparent),
+        radial-gradient(700px 240px at 90% 90%, rgba(79,214,255,0.02), transparent),
+        var(--bg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding-bottom: 60px;
+    }
+
+    /* Top nav / hero */
+    .hero {
+      display:flex;
+      align-items:center;
+      gap:18px;
+      padding:28px 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+      backdrop-filter: blur(4px);
+    }
+    .crest {
+      width:76px;height:76px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(77,214,255,0.08), rgba(138,123,255,0.05));
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 10px 40px rgba(79,214,255,0.05), 0 2px 10px rgba(0,0,0,0.6);
+      border: 1px solid rgba(79,214,255,0.09);
+      flex:0 0 76px;
+    }
+    .crest svg{width:56px;height:56px;display:block; filter: drop-shadow(0 0 12px rgba(79,214,255,0.16));}
+    .brand {
+      display:flex;flex-direction:column;gap:4px;
+    }
+    .brand .name{font-weight:800;font-size:18px;letter-spacing:0.3px}
+    .brand .alias{color:var(--neon-2);font-weight:700;font-size:12px}
+    .navlinks{margin-left:auto;display:flex;gap:12px;align-items:center}
+    .navlinks a{
+      color:var(--muted); text-decoration:none; padding:8px 12px;border-radius:8px;
+      font-weight:700;font-size:13px;
+    }
+    .navlinks a.active, .navlinks a:hover{
+      color: white; box-shadow: 0 6px 28px rgba(79,214,255,0.06); background: rgba(255,255,255,0.01);
+    }
+
+    /* page header */
+    .page-head{
+      text-align:center;
+      padding:42px 24px 22px;
+      max-width:980px;margin:0 auto;
+      animation: fadeInSlide 600ms ease both;
+    }
+    .title{
+      font-size:36px;font-weight:800;letter-spacing:0.6px;margin-bottom:8px;
+      color: white;
+      text-shadow: 0 10px 40px rgba(79,214,255,0.04);
+    }
+    .subtitle{
+      color:var(--muted); font-weight:600; margin-bottom:18px;
+    }
+
+    /* grid of neon cards */
+    .hof-grid{
+      max-width:1200px;
+      margin: 8px auto 40px;
+      padding: 18px;
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap:18px;
+      align-items:start;
+    }
+
+    .card{
+      background: var(--card-grad);
+      border-radius:12px;
+      padding:16px;
+      border:1px solid rgba(77,214,255,0.04);
+      box-shadow: 0 10px 30px rgba(3,6,10,0.6);
+      transform: translateY(10px);
+      opacity: 0;
+      transition: transform 360ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms, border-color 240ms;
+      position:relative;
+      overflow:hidden;
+      isolation:isolate;
+    }
+    /* entry animation with stagger -- using delays via inline style below */
+    .card.show{ transform: translateY(0); opacity:1; }
+
+    .card::after{
+      content:"";
+      position:absolute; inset: -40% -40% auto auto; width: 140px;height:140px;
+      background: radial-gradient(circle at 30% 30%, rgba(79,214,255,0.06), transparent 30%);
+      transform: rotate(18deg);
+      pointer-events:none;
+      transition: opacity 300ms;
+    }
+
+    .card .title{ font-weight:800; font-size:16px; margin-bottom:8px; color:#fff; }
+    .card .desc{ color:var(--muted); font-size:13px; margin-bottom:12px; min-height:40px; }
+    .card .meta{ display:flex; gap:10px; font-size:12px; color: #bcdff0; align-items:center; flex-wrap:wrap; }
+    .card .meta .badge{
+      background: linear-gradient(90deg, rgba(79,214,255,0.06), rgba(138,123,255,0.03));
+      padding:6px 10px; border-radius:999px; font-weight:700; color:var(--neon);
+      border: 1px solid rgba(79,214,255,0.06);
+    }
+
+    .card .link{
+      display:inline-block; margin-top:12px; text-decoration:none; font-weight:800; font-size:13px;
+      padding:8px 12px; border-radius:10px; color:#051017; background: linear-gradient(90deg, var(--neon), var(--neon-2));
+      box-shadow: 0 10px 30px rgba(79,214,255,0.09); border: none;
+    }
+
+    .card:hover{
+      transform: translateY(-8px);
+      box-shadow: 0 26px 60px rgba(79,214,255,0.12);
+      border-color: rgba(79,214,255,0.16);
+    }
+
+    /* subtle scan line on hover */
+    .card:hover::before{
+      content:"";
+      position:absolute; inset:0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.02), transparent);
+      transform: translateX(-120%); animation: sweep 900ms linear forwards;
+      pointer-events:none;
+    }
+    @keyframes sweep{ to{ transform: translateX(120%); } }
+
+    /* footer */
+    .footer{
+      max-width:1200px;margin: 18px auto;padding:18px;color:var(--muted);text-align:center;font-size:13px;
+    }
+
+    /* responsive */
+    @media (max-width:900px){
+      .hero{padding:16px}
+      .crest{width:60px;height:60px}
+      .page-head{padding:28px 18px}
+    }
+
+    /* small animations */
+    @keyframes fadeInSlide{
+      from { opacity:0; transform: translateY(8px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+
+    /* focus styles for keyboard users */
+    a:focus { outline: 3px solid rgba(79,214,255,0.12); outline-offset: 3px; border-radius:6px; }
+
+    /* tasteful background noise (keeps text readable) */
+    .bg-noise{
+      position:fixed; inset:0; pointer-events:none; opacity:0.03; mix-blend-mode:overlay; z-index:0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="%23050A12"/><circle cx="30" cy="30" r="1" fill="%23ffffff" opacity="0.03"/></svg>');
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <h1>Hall of Fame</h1>
-  <p class="subtitle">Achievements in responsible disclosure</p>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="halloffame.html" class="active">Hall of Fame</a>
-  </nav>
-</header>
+  <!-- unobtrusive noise layer -->
+  <div class="bg-noise" aria-hidden="true"></div>
 
-<section class="container grid">
-  <div class="card"><h3>Coret Genealogie</h3><a href="https://genealogie.coret.org/en/beleid/responsible_disclosure.php" target="_blank">View Proof</a></div>
-  <div class="card"><h3>BT Telecom</h3><a href="https://www.bt.com/about/contact-bt/responsible-disclosure/hall-of-fame" target="_blank">View Proof</a></div>
-  <div class="card"><h3>TU Delft</h3><a href="https://www.tudelft.nl/en/hall-of-fame" target="_blank">View Proof</a></div>
-  <div class="card"><h3>United Nations</h3><a href="https://unite.un.org/en/un-information-security-hall-fame" target="_blank">View Proof</a></div>
-  <div class="card"><h3>CERT-EU</h3><a href="https://www.cert.europa.eu/hall-of-fame" target="_blank">View Proof</a></div>
-  <div class="card"><h3>BASF</h3><a href="https://www.basf.com/global/en/legal/responsible-disclosure-statement" target="_blank">View Proof</a></div>
-  <div class="card"><h3>University of Twente</h3><a href="https://www.utwente.nl/en/cyber-safety/responsible/hall-of-fame/" target="_blank">View Proof</a></div>
-  <div class="card"><h3>F5 Networks</h3><a href="https://my.f5.com/manage/s/article/K75282801" target="_blank">View Proof</a></div>
-  <div class="card"><h3>Accenture</h3><a href="https://accenture.responsibledisclosure.com/hc/en-us/articles/360040573233-Acknowledgments" target="_blank">View Proof</a></div>
-</section>
+  <!-- hero / top -->
+  <header class="hero" role="banner">
+    <div class="crest" aria-hidden="true">
+      <!-- embedded SVG crest -->
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="g1" x1="0" x2="1">
+            <stop offset="0" stop-color="#6ef0b4" stop-opacity="0.9"/>
+            <stop offset="1" stop-color="#8ab4ff" stop-opacity="0.95"/>
+          </linearGradient>
+        </defs>
+        <path d="M50 12 L64 28 H82 L68 42 L72 60 L50 52 L28 60 L32 42 L18 28 H36 Z" fill="url(#g1)"/>
+        <path d="M50 52 L68 42 L72 60 L50 84 L28 60 L32 42 L50 52 Z" fill="#2b2b2b" opacity="0.07"/>
+      </svg>
+    </div>
 
-<footer>
-  © 2025 Dark Knight — Cybersecurity Researcher
-</footer>
+    <div class="brand" role="img" aria-label="Aluri Hruthik Dark Knight branding">
+      <div class="name">Aluri Hruthik</div>
+      <div class="alias">Dark Knight</div>
+    </div>
 
+    <nav class="navlinks" role="navigation" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="halloffame.html" class="active" aria-current="page">Hall of Fames</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="https://github.com/darkknight268" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://in.linkedin.com/in/aluri-hruthik-a47271258" target="_blank" rel="noopener">LinkedIn</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-head" role="region" aria-labelledby="hof-heading">
+      <h1 id="hof-heading" class="title">Hall of Fames</h1>
+      <p class="subtitle">Recognized by Leading Organizations Worldwide</p>
+    </section>
+
+    <section class="hof-grid" aria-live="polite" aria-label="Hall of Fame achievements">
+      <!-- card 1 -->
+      <article class="card" data-delay="0">
+        <div class="title">Coret Genealogie</div>
+        <div class="desc">Responsible Disclosure acknowledgment for security report</div>
+        <div class="meta">
+          <span class="badge">Responsible Disclosure</span>
+          <span>—</span>
+        </div>
+        <a class="link" href="https://genealogie.coret.org/en/beleid/responsible_disclosure.php" target="_blank" rel="noopener">View Proof →</a>
+      </article>
+
+      <!-- card 2 -->
+      <article class="card" data-delay="80">
+        <div class="title">BT (British Telecom)</div>
+        <div class="desc">Listed on Security Hall of Fame</div>
+        <div class="meta">
+          <span class="badge">Hall of Fame</span>
+          <span>—</span>
+        </div>
+        <a class="link" href="https://www.bt.com/about/contact-bt/responsible-disclosure/hall-of-fame" target="_blank" rel="noopener">View Proof →</a>
+      </article>
+
+      <!-- card 3 -->
+      <article class="card" data-delay="160">
+        <div class="title">TU Delft</div>
+        <div class="desc">Responsible disclosure acknowledgment</div>
+        <div class="meta">
+          <span class="badge">University</span>
+          <span>—</span>
+        </div>
+        <a class="link" href="https://www.tudelft.nl/en/hall-of-fame" target="_blank" rel="noopener">View Proof →</a>
+      </article>
+
+      <!-- card 4 -->
+      <article class="card" data-delay="240">
+        <div class="title">United Nations</div>
+        <div class="desc">UN Information Security Hall of Fame listing</div>
+        <div class="meta">
+          <span class="badge">UN</span>
+          <span>—</span>
+        </div>
+        <a class="link" href="https://unite.un.org/en/un-information-security-hall-fame" target="_blank" rel="noopener">View Proof →</a>
+      </article>
+
+      <!-- card 5 -->
+      <article class="card" data-delay="320">
+        <div class="title">CERT-EU</div>
+        <div class="desc">European Union CERT Hall of Fame acknowledgment</div>
+        <div class="meta">
+          <span class="badge">CERT</span>
+          <span>—</span>
+        </div>
+        <a class="link" href="https://www.cert.europa.eu/hall-of-fame" target="_blank" rel="noopener">View Proof →</a>
+      </article>
+
+      <!-- card 6 -->
+      <article class="card" data-delay="400">
+        <div class="title">BASF</div>
+        <div class="desc">Responsible disclosure recognition</div>
+        <div class="meta">
+          <span class="badge">Corporate</span>
+          <span>—</span>
+        </div>
+        <a class="link" href="https://www.basf.com/global/en/legal/responsible-disclosure-statement" target="_blank" rel="noopener">View Proof →</a>
+      </article>
+
+      <!-- card 7 -->
+      <article class="card" data-delay="480">
+        <div class="title">University of Twente</div>
+        <div class="desc">Cyber Safety Hall of Fame listing</div>
+        <div class="meta">
+          <span class="badge">University</span>
+          <span>—</span>
+        </div>
+        <a class="link" href="https://www.utwente.nl/en/cyber-safety/responsible/hall-of-fame/" target="_blank" rel="noopener">View Proof →</a>
+      </article>
+
+      <!-- card 8 -->
+      <article class="card" data-delay="560">
+        <div class="title">F5 Networks</div>
+        <div class="desc">Security acknowledgment published</div>
+        <div class="meta">
+          <span class="badge">Vendor</span>
+          <span>—</span>
+        </div>
+        <a class="link" href="https://my.f5.com/manage/s/article/K75282801" target="_blank" rel="noopener">View Proof →</a>
+      </article>
+
+      <!-- card 9 -->
+      <article class="card" data-delay="640">
+        <div class="title">Accenture</div>
+        <div class="desc">Acknowledged for vulnerability disclosure</div>
+        <div class="meta">
+          <span class="badge">Consulting</span>
+          <span>—</span>
+        </div>
+        <a class="link" href="https://accenture.responsibledisclosure.com/hc/en-us/articles/360040573233-Acknowledgments" target="_blank" rel="noopener">View Proof →</a>
+      </article>
+    </section>
+
+    <div class="footer" role="contentinfo">
+      © <span id="year"></span> Aluri Hruthik — Dark Knight • Responsible disclosure • Ethical research
+    </div>
+  </main>
+
+  <script>
+    // set year
+    document.getElementById('year').innerText = new Date().getFullYear();
+
+    // staggered reveal for cards
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = Array.from(document.querySelectorAll('.card'));
+      cards.forEach((c, i) => {
+        const delay = parseInt(c.dataset.delay || (i*80), 10);
+        setTimeout(() => c.classList.add('show'), delay);
+      });
+    });
+
+    // small keyboard accessibility: allow enter on link-like cards
+    document.querySelectorAll('.card .link').forEach(a => {
+      a.addEventListener('focus', () => a.parentElement.classList.add('focus'));
+      a.addEventListener('blur', () => a.parentElement.classList.remove('focus'));
+    });
+  </script>
 </body>
 </html>
