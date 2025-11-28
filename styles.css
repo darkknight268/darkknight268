@@ -4,6 +4,28 @@ body {
   color: #E5F9FF;
   font-family: "Share Tech Mono", monospace;
   overflow-x: hidden;
+  cursor: none; /* HIDE NORMAL CURSOR EVERYWHERE 🚀 */
+}
+
+/* Neon Cursor Dot */
+.cursor-dot {
+  width: 14px;
+  height: 14px;
+  background: #4fd6ff;
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 5000;
+  box-shadow: 0 0 18px #4fd6ff, 0 0 38px #4fd6ff;
+}
+
+/* Canvas used for particle trail */
+#cursorTrail {
+  position: fixed;
+  inset: 0;
+  z-index: 4999;
+  pointer-events: none;
 }
 
 /* Navbar */
@@ -23,61 +45,17 @@ body {
 .logo {
   width: 50px;
 }
-
 nav {
   display: flex;
   gap: 25px;
-  justify-content: center; /* centers all links */
+  justify-content: center;
   align-items: center;
-  flex-wrap: wrap; /* ensures no link disappears */
+  flex-wrap: wrap;
   padding: 20px 0;
 }
 
 nav a {
-  color: #c5c7f7;
-  text-decoration: none;
-  font-size: 16px;
-  transition: 0.3s ease;
-}
-
-nav a:hover {
-  color: #00eaff; /* neon blue hover */
-  text-shadow: 0 0 8px #00eaff;
-}
-
-nav a.active {
-  color: #00eaff;
-  font-weight: bold;
-  text-shadow: 0px 0px 10px #00eaff;
-}
-nav a {
-  padding-bottom: 4px;
-}
-
-nav a.active,
-nav a:hover {
-  border-bottom: 2px solid #00eaff;
-}
-
-
-
-.brand-name {
-  font-family: 'Orbitron';
-  font-size: 20px;
-  margin: 0;
-  color: #44e8ff;
-  text-shadow: 0 0 10px #39d2ff;
-}
-
-.brand-role {
-  font-size: 12px;
-  margin: 0;
-  opacity: 0.7;
-}
-
-nav a {
   color: #bdefff;
-  margin-left: 18px;
   text-decoration: none;
   font-size: 14px;
   transition: 0.3s;
@@ -126,14 +104,4 @@ nav a:hover, .active {
 }
 
 /* Animations */
-@keyframes fadeDown {
-  to { opacity: 1; transform: translateY(0); }
-  from { opacity: 0; transform: translateY(-20px); }
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  padding: 25px 0;
-  opacity: 0.6;
-}
+@keyframes fad
