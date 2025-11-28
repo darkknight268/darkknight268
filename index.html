@@ -69,6 +69,47 @@
 <footer>
   © 2025 Dark Knight — Cybersecurity Researcher
 </footer>
+<div class="cursor-dot"></div>
+<canvas id="cursorTrail"></canvas>
+<div class="cursor-dot"></div>
+<canvas id="cursorTrail"></canvas>
+
+<script>
+const cursorDot = document.querySelector(".cursor-dot");
+const canvas = document.getElementById("cursorTrail");
+const ctx = canvas.getContext("2d");
+let w,h;
+function resize(){ w=canvas.width=innerWidth; h=canvas.height=innerHeight; }
+resize(); window.addEventListener("resize",resize);
+
+let particles=[];
+document.addEventListener("mousemove",(e)=>{
+  cursorDot.style.left=e.clientX+"px";
+  cursorDot.style.top=e.clientY+"px";
+  for(let i=0;i<3;i++){
+    particles.push({
+      x:e.clientX,y:e.clientY,
+      size:Math.random()*4+2,
+      alpha:1,
+      sx:(Math.random()-.5)*2,
+      sy:(Math.random()-.5)*2
+    });
+  }
+});
+
+function animate(){
+  ctx.clearRect(0,0,w,h);
+  particles.forEach((p,i)=>{
+    p.x+=p.sx; p.y+=p.sy; p.alpha-=0.02;
+    if(p.alpha<=0) particles.splice(i,1);
+    ctx.fillStyle=`rgba(79,214,255,${p.alpha})`;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill();
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
 
 </body>
 </html>
