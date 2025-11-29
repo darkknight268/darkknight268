@@ -42,6 +42,39 @@ body {
   z-index: 100;
 }
 
+.social-icons {
+  margin-top: 10px;
+  display: flex;
+  gap: 14px;
+}
+
+.social {
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: 0.25s ease-in-out;
+  color: #bdefff;
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 255, 0.09);
+}
+
+.social:hover {
+  color: #00eaff;
+  box-shadow: 0 0 10px #00eaff, 0 0 25px #00eaff;
+  transform: translateY(-3px);
+}
+
+.linkedin:hover {
+  text-shadow: 0 0 10px #0077b5;
+}
+
+.instagram:hover {
+  text-shadow: 0 0 10px #e1306c;
+}
+
+
 .logo {
   width: 50px;
 }
@@ -101,6 +134,48 @@ nav a:hover, .active {
   border-radius: 14px;
   padding: 25px;
   box-shadow: 0 0 35px #00d9ff;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS (Add to styles.css)
+   ========================================= */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column; /* Stack logo and links */
+    padding: 15px 20px;     /* Reduce padding */
+    gap: 15px;
+    background: rgba(0,0,0,0.9); /* Darker background for readability */
+  }
+
+  /* Fix for the broken animation at the end of styles.css */
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+  nav {
+    gap: 15px;        /* Reduce gap between links */
+    padding: 10px 0;
+  }
+
+  nav a {
+    font-size: 13px;  /* Slightly smaller text */
+  }
+
+  .hero {
+    padding-top: 180px; /* Push hero down so it doesn't hide behind nav */
+  }
+  
+  .card {
+    width: 90%;       /* Make cards wider on mobile */
+    margin: 20px auto;
+  }
 }
 
 /* Animations */
