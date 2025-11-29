@@ -29,17 +29,47 @@ body {
 }
 
 /* Navbar */
+/* =========================================
+   UPDATED NAVBAR (Left-Aligned)
+   ========================================= */
 .navbar {
   width: 100%;
   padding: 20px 60px;
   display: flex;
-  justify-content: space-between;
+  
+  /* CHANGE: This moves everything to the Left side */
+  justify-content: flex-start; 
+  
   align-items: center;
   background: rgba(0,0,0,0.75);
   backdrop-filter: blur(10px);
   position: fixed;
   top: 0;
   z-index: 100;
+  box-sizing: border-box;
+}
+
+/* Ensure the nav links sit nicely on the left */
+nav {
+  display: flex;
+  gap: 30px; /* Space between links */
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  color: #bdefff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700; /* Made them slightly bolder to look like headers */
+  transition: 0.3s;
+  text-transform: uppercase; /* Optional: Looks cleaner for nav items */
+}
+
+nav a:hover, .active {
+  color: #00eaff;
+  text-shadow: 0 0 10px #00eaff;
 }
 
 .social-icons {
@@ -105,11 +135,15 @@ nav a:hover, .active {
   padding-top: 150px;
 }
 
+/* THIS IS THE FIXED CODE */
 .hero-img {
   width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #4fd6ff;
   filter: drop-shadow(0 0 35px #00e9ff);
-  animation: fadeDown 1s ease-out forwards;
-  opacity: 0;
+  /* No animation or opacity: 0; lines here! */
 }
 
 .glow-title {
@@ -176,6 +210,150 @@ nav a:hover, .active {
     width: 90%;       /* Make cards wider on mobile */
     margin: 20px auto;
   }
+}
+
+/* =========================================
+   REDESIGNED CONTACT BLOCK
+   ========================================= */
+
+/* 1. The Container - A sharper, techier look */
+.contact-card {
+  width: 70%;
+  margin: 40px auto;
+  /* Deeper, darker background for contrast */
+  background: rgba(10, 14, 20, 0.95);
+  /* Thinner, sharper neon border */
+  border: 1px solid #4fd6ff;
+  /* A subtle internal scanline effect */
+  background-image: linear-gradient(transparent 50%, rgba(79, 214, 255, 0.02) 50%);
+  background-size: 100% 4px;
+  border-radius: 8px; /* Less rounded corners */
+  padding: 30px;
+  /* Softer, pulsing glow */
+  box-shadow: 0 0 25px rgba(79, 214, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+/* 2. The Heading */
+.contact-card .section-title {
+  color: #4fd6ff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 25px;
+  text-shadow: 0 0 10px rgba(79, 214, 255, 0.5);
+}
+
+/* 3. Email and GitHub Text - "Terminal Prompt" style */
+.contact-card p {
+  font-size: 16px;
+  color: #bdefff; /* Light blue text */
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Adds a glowing ">" before the text */
+.contact-card p::before {
+  content: '>_ ';
+  color: #4fd6ff;
+  font-weight: bold;
+  margin-right: 10px;
+  text-shadow: 0 0 5px #4fd6ff;
+}
+
+/* 4. Fixing those hard-to-read Links */
+.contact-card p a {
+  color: #4fd6ff !important; /* Force neon color */
+  text-decoration: none;
+  border-bottom: 1px dotted #4fd6ff;
+  transition: 0.3s ease;
+  margin-left: 5px;
+}
+
+.contact-card p a:hover {
+  color: #ffffff !important;
+  text-shadow: 0 0 15px #4fd6ff;
+  border-bottom-style: solid;
+  letter-spacing: 1px; /* Slight expansion on hover */
+}
+
+/* 5. Redesigned Social Buttons (Cyberpunk Fill Effect) */
+.contact-card .social-icons {
+  margin-top: 30px;
+  gap: 20px;
+}
+
+.contact-card .social {
+  position: relative;
+  background: transparent;
+  /* Neon Border */
+  border: 2px solid #4fd6ff;
+  color: #4fd6ff;
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+  padding: 12px 24px;
+  overflow: hidden; /* Needed for the fill effect */
+  z-index: 1;
+  transition: color 0.4s, box-shadow 0.4s, transform 0.2s;
+  box-shadow: none; /* Reset old shadow */
+}
+
+/* The sliding fill animation layer */
+.contact-card .social::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0; /* Start empty */
+  height: 100%;
+  background: #4fd6ff;
+  z-index: -1; /* Sit behind text */
+  transition: width 0.4s ease-in-out;
+}
+
+/* Hover State for Buttons */
+.contact-card .social:hover {
+  color: #000000; /* Text turns black for contrast */
+  box-shadow: 0 0 25px #4fd6ff; /* Bright glow */
+  transform: translateY(-3px);
+  text-shadow: none;
+}
+
+/* Trigger the fill animation */
+.contact-card .social:hover::before {
+  width: 100%;
+}
+
+/* Mobile adjustments for the new card */
+@media (max-width: 768px) {
+    .contact-card {
+        width: 90%;
+        padding: 20px;
+    }
+    .contact-card p {
+        font-size: 14px;
+        flex-wrap: wrap; /* Allows long emails to wrap */
+    }
+}
+
+/* =========================================
+   CENTERED FOOTER FIX
+   ========================================= */
+footer {
+  width: 100%;             /* Force full width */
+  text-align: center;      /* Center the text */
+  padding: 20px 0;         /* Add spacing top/bottom */
+  position: relative;      /* Ensure it sits correctly in the layout */
+  margin-top: auto;        /* Push to bottom if using flexbox body */
+  display: block;          /* Ensure it behaves as a block element */
+}
+
+/* Ensure the paragraph inside doesn't pull it left */
+footer p {
+  margin: 0;
+  display: inline-block;
 }
 
 /* Animations */
