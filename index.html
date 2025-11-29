@@ -8,82 +8,46 @@
 
 <style>
 /* TERMINAL LOADING OVERLAY */
-#loadingOverlay {
-  position: fixed;
-  inset: 0;
-  background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
-  overflow: hidden;
-}
-
-#loadingTerminal {
-  font-family: "Share Tech Mono", monospace;
-  color: #4fd6ff;
-  font-size: 16px;
-  white-space: pre-line;
-  line-height: 1.4;
-  width: 80%;
-  max-width: 600px;
-  text-align: left;
-}
-
-.fade-out {
-  animation: fadeOut 0.8s forwards ease-in-out;
-}
-
-@keyframes fadeOut {
-  to { opacity: 0; visibility: hidden; }
-}
-
-body.loaded main,
-body.loaded header,
-body.loaded footer {
-  opacity: 1;
-  transition: opacity 0.8s ease-in-out;
-}
-
+/* REPLACE WITH THIS (Optional: keeps a subtle fade-in) */
 main, header, footer {
-  opacity: 0; /* Hidden until boot finishes */
+  animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 </style>
 
 </head>
 <body>
 
-<!-- LOADING SCREEN TERMINAL -->
-<div id="loadingOverlay">
-  <div id="loadingTerminal"></div>
-</div>
-
 <!-- NAVIGATION -->
 <header class="navbar">
-  <img class="logo" src="crest.svg" alt="Dark Knight Logo">
   <nav>
     <a href="index.html" class="active">Home</a>
     <a href="halloffame.html">Hall of Fames</a>
-    <a href="#contact">Contact</a>
+    <a href="https://www.instagram.com/the_dark_knight_soldier" target="_blank">Instagram</a>
+    <a href="https://www.linkedin.com/in/aluri-hruthik-a47271258" target="_blank">LinkedIn</a>
   </nav>
 </header>
 
 <!-- HERO SECTION -->
 <main>
   <section class="hero">
-    <img src="batman.png" class="hero-img" alt="Dark Knight">
+    <img src="background.jpg" class="hero-img" alt="Profile Image">
     <h1 class="glow-title">Aluri Hruthik</h1>
     <p class="glow-sub">Cybersecurity Researcher | Dark Knight</p>
-  </section>
-
+</section>
   <section class="card">
-    <h2 class="section-title">About Me</h2>
-    <p>I am a cybersecurity researcher who focuses on Web Security, Responsible Disclosure, Bug Bounty, and Ethical Hacking.</p>
+    <h2 class="section-title">Who Am I </h2>
+    <p>I am a cybersecurity researcher who focuses on Web Security, Bug Bounty, and Ethical Hacking.</p>
+    <p>Learning For Fun Not for Getting Job</p> </p>
   </section>
 
- <section id="contact" class="card">
+<section id="contact" class="contact-card">  
   <h2 class="section-title">Contact</h2>
-  <p>Email: <a href="mailto:hruthikaluri268@gmail.com">hruthikaluri268@gmail.com</a></p>
+  <p>Email: <a href="mailto:alurihruthik268@gmail.com">alurihruthik268@gmail.com</a></p>
   <p>GitHub: <a href="https://github.com/darkknight268" target="_blank">github.com/darkknight268</a></p>
 
   <div class="social-icons">
@@ -103,66 +67,40 @@ main, header, footer {
 <canvas id="cursorTrail"></canvas>
 
 <script>
-// Auto Year
+/* =============================
+   1. AUTO YEAR UPDATE
+============================= */
 document.getElementById("year").innerText = new Date().getFullYear();
 
 /* =============================
-   TERMINAL LOADING BOOT SEQUENCE
-============================= */
-const terminal = document.getElementById("loadingTerminal");
-const overlay = document.getElementById("loadingOverlay");
-
-const messages = [
-  "> INITIALIZING DARK KNIGHT SYSTEM...",
-  "> DECRYPTING IDENTITY: ALURI HRUTHIK (DARK KNIGHT)",
-  "> ACCESS LEVEL: AUTHORIZED",
-  "> LOADING INTERFACE ███████▒▒▒▒▒",
-  "> SYSTEM ONLINE..."
-];
-
-let i = 0;
-function showLine() {
-  if (i < messages.length) {
-    terminal.innerHTML += messages[i] + "\n";
-    i++;
-    setTimeout(showLine, 400);
-  } else {
-    setTimeout(() => {
-      overlay.classList.add("fade-out");
-      document.body.classList.add("loaded");
-    }, 600);
-  }
-}
-
-showLine();
-
-/* =============================
-   UPDATED: MOUSE + TOUCH SUPPORT
+   2. NEON CURSOR & PARTICLE TRAIL
 ============================= */
 const cursorDot = document.querySelector(".cursor-dot");
 const canvas = document.getElementById("cursorTrail");
 const ctx = canvas.getContext("2d");
 let w, h;
 
-function resize() { 
-  w = canvas.width = innerWidth; 
-  h = canvas.height = innerHeight; 
+// Resize canvas to fit screen
+function resize() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
 }
-resize(); 
+resize();
 window.addEventListener("resize", resize);
 
 let particles = [];
 
-// Unified function to handle input coordinates
+// Helper function to create particles at x,y
 function createParticles(x, y) {
-  // Move the dot
-  cursorDot.style.left = x + "px";
-  cursorDot.style.top = y + "px";
+  if (cursorDot) {
+    cursorDot.style.left = x + "px";
+    cursorDot.style.top = y + "px";
+  }
   
-  // Create particles
-  for(let i=0; i<3; i++){
+  // Add 3 particles per frame
+  for (let i = 0; i < 3; i++) {
     particles.push({
-      x: x, 
+      x: x,
       y: y,
       size: Math.random() * 4 + 2,
       alpha: 1,
@@ -172,32 +110,36 @@ function createParticles(x, y) {
   }
 }
 
-// 1. Mouse Event
-document.addEventListener("mousemove", (e) => {
+// MOUSE MOVEMENT
+window.addEventListener("mousemove", (e) => {
   createParticles(e.clientX, e.clientY);
 });
 
-// 2. Touch Event (Mobile)
-document.addEventListener("touchmove", (e) => {
-  // Prevent scrolling while drawing (optional, remove if you want scroll)
-  // e.preventDefault(); 
+// TOUCH MOVEMENT (For Mobile)
+window.addEventListener("touchmove", (e) => {
   const touch = e.touches[0];
   createParticles(touch.clientX, touch.clientY);
 }, { passive: false });
 
-function animate(){
+// ANIMATION LOOP
+function animate() {
   ctx.clearRect(0, 0, w, h);
+  
   particles.forEach((p, i) => {
-    p.x += p.sx; 
-    p.y += p.sy; 
-    p.alpha -= 0.02;
-    if(p.alpha <= 0) particles.splice(i, 1);
-    
-    ctx.fillStyle = `rgba(79,214,255,${p.alpha})`;
-    ctx.beginPath(); 
-    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); 
-    ctx.fill();
+    p.x += p.sx;
+    p.y += p.sy;
+    p.alpha -= 0.02; // Fade out speed
+
+    if (p.alpha <= 0) {
+      particles.splice(i, 1);
+    } else {
+      ctx.fillStyle = `rgba(79,214,255,${p.alpha})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
   });
+  
   requestAnimationFrame(animate);
 }
 animate();
