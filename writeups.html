@@ -18,6 +18,10 @@
   text-shadow: 0 0 20px #00eaff;
 }
 
+body, html {
+  cursor: none !important;
+}
+
 .writeup-card {
   width: 70%;
   margin: 30px auto;
@@ -50,6 +54,9 @@
   border-bottom: 1px dotted #00eaff;
 }
 
+body {
+  cursor: none !important;
+}
 .writeup-card a:hover {
   text-shadow: 0 0 10px #00eaff;
   letter-spacing: 1px;
@@ -87,7 +94,79 @@
 <div class="cursor-dot"></div>
 <canvas id="cursorTrail"></canvas>
 
-<script src="cursor.js"></script>
+<script>
+/* =============================
+   NEON CURSOR & PARTICLE TRAIL
+============================= */
+const cursorDot = document.querySelector(".cursor-dot");
+const canvas = document.getElementById("cursorTrail");
+const ctx = canvas.getContext("2d");
+let w, h;
+
+// Resize canvas to fit screen
+function resize() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+let particles = [];
+
+// Helper function to create particles at x,y
+function createParticles(x, y) {
+  if (cursorDot) {
+    cursorDot.style.left = x + "px";
+    cursorDot.style.top = y + "px";
+  }
+  
+  // Add 3 particles per frame
+  for (let i = 0; i < 3; i++) {
+    particles.push({
+      x: x,
+      y: y,
+      size: Math.random() * 4 + 2,
+      alpha: 1,
+      sx: (Math.random() - 0.5) * 2,
+      sy: (Math.random() - 0.5) * 2
+    });
+  }
+}
+
+// MOUSE MOVEMENT
+window.addEventListener("mousemove", (e) => {
+  createParticles(e.clientX, e.clientY);
+});
+
+// TOUCH MOVEMENT (For Mobile)
+window.addEventListener("touchmove", (e) => {
+  const touch = e.touches[0];
+  createParticles(touch.clientX, touch.clientY);
+}, { passive: false });
+
+// ANIMATION LOOP
+function animate() {
+  ctx.clearRect(0, 0, w, h);
+  
+  particles.forEach((p, i) => {
+    p.x += p.sx;
+    p.y += p.sy;
+    p.alpha -= 0.02;
+
+    if (p.alpha <= 0) {
+      particles.splice(i, 1);
+    } else {
+      ctx.fillStyle = `rgba(79,214,255,${p.alpha})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+  
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
 
 </body>
 </html>
