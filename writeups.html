@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writeups — Dark Knight</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<style>
+.page-header {
+  text-align: center;
+  margin-top: 150px;
+}
+
+.page-header h1 {
+  font-size: 40px;
+  text-shadow: 0 0 20px #00eaff;
+}
+
+.writeup-card {
+  width: 70%;
+  margin: 30px auto;
+  padding: 25px;
+  border: 1px solid #00eaff;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.7);
+  box-shadow: 0 0 25px #00eaff50;
+  transition: 0.3s ease;
+}
+
+.writeup-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 35px #00eaff;
+}
+
+.writeup-card h2 {
+  color: #4fd6ff;
+  margin-bottom: 10px;
+}
+
+.writeup-card p {
+  color: #bdefff;
+}
+
+.writeup-card a {
+  color: #00eaff;
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 1px dotted #00eaff;
+}
+
+.writeup-card a:hover {
+  text-shadow: 0 0 10px #00eaff;
+  letter-spacing: 1px;
+}
+</style>
+
+</head>
+<body>
+
+<header class="navbar">
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="halloffame.html">Hall of Fames</a>
+    <a href="writeups.html" class="active">Writeups</a>
+    <a href="https://www.instagram.com/the_dark_knight_soldier" target="_blank">Instagram</a>
+    <a href="https://www.linkedin.com/in/aluri-hruthik-a47271258" target="_blank">LinkedIn</a>
+  </nav>
+</header>
+
+<div class="page-header">
+  <h1>Writeups</h1>
+</div>
+
+<section class="writeup-card">
+  <h2>The XSS That Wasn't There Until I Turned Back</h2>
+  <p>A detailed writeup of a unique reflected XSS vulnerability involving back-navigation behavior.</p>
+  <a href="https://medium.com/@darknight268/the-xss-that-wasnt-there-until-i-turned-back-352ae297bd6e" target="_blank">
+    Read Full Write-Up →
+  </a>
+</section>
+
+<!-- Add more writeups here later -->
+
+<!-- Neon cursor -->
+<div class="cursor-dot"></div>
+<canvas id="cursorTrail"></canvas>
+
+<script src="cursor.js"></script>
+
+</body>
+</html>
